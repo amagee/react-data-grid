@@ -13,6 +13,7 @@ const Cell = React.createClass({
 
   propTypes: {
     rowIdx: React.PropTypes.number.isRequired,
+    row: React.PropTypes.object.isRequired,
     idx: React.PropTypes.number.isRequired,
     selected: React.PropTypes.shape({
       idx: React.PropTypes.number.isRequired
@@ -31,7 +32,8 @@ const Cell = React.createClass({
     cellControls: React.PropTypes.any,
     rowData: React.PropTypes.object.isRequired,
     forceUpdate: React.PropTypes.bool,
-    expandableOptions: React.PropTypes.object.isRequired
+    expandableOptions: React.PropTypes.object.isRequired,
+    getCellContainerProps: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -39,7 +41,8 @@ const Cell = React.createClass({
       tabIndex: -1,
       ref: 'cell',
       isExpanded: false,
-      value: ''
+      value: '',
+      getCellContainerProps: (props) => ({})
     };
   },
 
@@ -146,7 +149,14 @@ const Cell = React.createClass({
   getFormatter() {
     let col = this.props.column;
     if (this.isActive()) {
-      return <EditorContainer rowData={this.getRowData() } rowIdx={this.props.rowIdx} idx={this.props.idx} cellMetaData={this.props.cellMetaData} column={col} height={this.props.height}/>;
+      return <EditorContainer 
+        rowData={this.getRowData()} 
+        rowIdx={this.props.rowIdx} 
+        idx={this.props.idx} 
+        cellMetaData={this.props.cellMetaData} 
+        column={col} 
+        height={this.props.height}
+      />;
     }
 
     return this.props.column.formatter;
@@ -435,7 +445,11 @@ const Cell = React.createClass({
       props.dependentValues = this.getFormatterDependencies();
       CellContent = React.cloneElement(Formatter, props);
     } else if (isFunction(Formatter)) {
-      CellContent = <Formatter value={this.props.value} dependentValues={this.getFormatterDependencies() }/>;
+      CellContent = <Formatter 
+        value={this.props.value} 
+        dependentValues={this.getFormatterDependencies() }
+        {...props}
+      />;
     } else {
       CellContent = <SimpleCellFormatter value={this.props.value}/>;
     }
@@ -453,18 +467,27 @@ const Cell = React.createClass({
 
     let className = this.getCellClass();
 
-    let cellContent = this.renderCellContent({
+    const cellArgs = {
       value: this.props.value,
       column: this.props.column,
       rowIdx: this.props.rowIdx,
+      row: this.props.row,
       isExpanded: this.props.isExpanded
-    });
+    };
+
+    let cellContent = this.renderCellContent(cellArgs);
+    let {style: cellContainerPropsStyle, ...cellContainerProps} = this.props.getCellContainerProps(cellArgs);
 
     let dragHandle = (!this.isActive() && ColumnUtils.canEdit(this.props.column, this.props.rowData, this.props.cellMetaData.enableCellSelect)) ? <div className="drag-handle" draggable="true" onDoubleClick={this.onDragHandleDoubleClick}><span style={{ display: 'none' }}></span></div> : null;
     let events = this.getEvents();
 
     return (
-      <div {...this.props} className={className} style={style}   {...events}>
+      <div 
+          {...this.props} 
+          className={className} 
+          style={{...style, ...cellContainerPropsStyle}}
+          {...events}
+          {...cellContainerProps}>
         {cellContent}
         {dragHandle}
       </div>

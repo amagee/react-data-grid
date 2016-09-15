@@ -78,17 +78,10 @@ class RowGroup extends Component {
   }
 
   render() {
-    let style = {
-      height: '50px',
-      overflow: 'hidden',
-      border: '1px solid #dddddd',
-      paddingTop: '15px',
-      paddingLeft: '5px'
-    };
     let rowGroupRendererProps = Object.assign({ onRowExpandClick: this.onRowExpandClick }, this.props);
 
     return (
-      <div style={style} className={this.getClassName()} onClick={this.onClick} onKeyDown={this.onKeyDown} tabIndex={-1}>
+      <div className={this.getClassName()} onClick={this.onClick} onKeyDown={this.onKeyDown} tabIndex={-1}>
         <this.props.renderer {...rowGroupRendererProps} />
       </div>
     );

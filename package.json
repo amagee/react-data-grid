@@ -23,6 +23,7 @@
     "react-dom": "~0.14.6"
   },
   "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "classnames": "^1.2.0",
     "es5-shim": "^4.0.3",
     "fbjs": "^0.6.1",

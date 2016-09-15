@@ -52,7 +52,8 @@ const Canvas = React.createClass({
         }).isRequired
       })
     ]),
-    rowGroupRenderer: React.PropTypes.func
+    rowGroupRenderer: React.PropTypes.func,
+    getCellContainerProps: React.PropTypes.func
   },
 
   getDefaultProps() {
@@ -60,7 +61,8 @@ const Canvas = React.createClass({
       rowRenderer: Row,
       onRows: () => {},
       selectedRows: [],
-      rowScrollTimeout: 0
+      rowScrollTimeout: 0,
+      getCellContainerProps: (props) => ({})
     };
   },
 
@@ -260,7 +262,15 @@ const Canvas = React.createClass({
   renderRow(props: any) {
     let row = props.row;
     if (row.__metaData && row.__metaData.isGroup) {
-      return <RowGroup name={row.name} {...row.__metaData} row={props.row} idx={props.idx} cellMetaData={this.props.cellMetaData} renderer={this.props.rowGroupRenderer}/>;
+      return <RowGroup 
+        {...props}
+        name={row.name} 
+        {...row.__metaData} 
+        row={props.row} 
+        idx={props.idx} 
+        cellMetaData={this.props.cellMetaData} 
+        renderer={this.props.rowGroupRenderer}
+      />;
     }
     if (this.state.scrollingTimeout !== null) {
       // in the midst of a rapid scroll, so we render placeholders
@@ -317,6 +327,8 @@ const Canvas = React.createClass({
     let rowHeight = this.props.rowHeight;
     let length = this.props.rowsCount;
 
+    console.log("canvas", this.props.getCellContainerProps);
+
     let rows = this.getRows(displayStart, displayEnd)
         .map((r, idx) => this.renderRow({
           key: displayStart + idx,
@@ -329,7 +341,8 @@ const Canvas = React.createClass({
           isSelected: this.isRowSelected(displayStart + idx, r.row, displayStart, displayEnd),
           expandedRows: this.props.expandedRows,
           cellMetaData: this.props.cellMetaData,
-          subRowDetails: r.subRowDetails
+          subRowDetails: r.subRowDetails,
+          getCellContainerProps: this.props.getCellContainerProps
         }));
 
     this._currentRowsLength = rows.length;

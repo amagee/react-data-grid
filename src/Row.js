@@ -88,6 +88,7 @@ const Row = React.createClass({
                       key={`${column.key}-${i}`}
                       idx={i}
                       rowIdx={this.props.idx}
+                      row={this.props.row}
                       value={this.getCellValue(column.key || i)}
                       column={column}
                       height={this.getRowHeight()}
@@ -96,7 +97,8 @@ const Row = React.createClass({
                       rowData={this.props.row}
                       selectedColumn={selectedColumn}
                       isRowSelected={this.props.isSelected}
-                      expandableOptions={this.getExpandableOptions(column.key)} />);
+                      expandableOptions={this.getExpandableOptions(column.key)}
+                      getCellContainerProps={this.props.getCellContainerProps} />);
         if (column.locked) {
           lockedCells.push(cell);
         } else {

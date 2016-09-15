@@ -39,7 +39,8 @@ const Viewport = React.createClass({
     rowScrollTimeout: PropTypes.number,
     contextMenu: PropTypes.element,
     getSubRowDetails: PropTypes.func,
-    rowGroupRenderer: PropTypes.func
+    rowGroupRenderer: PropTypes.func,
+    getCellContainerProps: PropTypes.func
   },
 
   onScroll(scroll: {scrollTop: number; scrollLeft: number}) {
@@ -73,6 +74,7 @@ const Viewport = React.createClass({
       position: 'absolute',
       top: this.props.rowOffsetHeight
     };
+
     return (
       <div
         className="react-grid-Viewport"
@@ -100,6 +102,7 @@ const Viewport = React.createClass({
           rowSelection={this.props.rowSelection}
           getSubRowDetails={this.props.getSubRowDetails}
           rowGroupRenderer={this.props.rowGroupRenderer}
+          getCellContainerProps={this.props.getCellContainerProps}
         />
       </div>
     );

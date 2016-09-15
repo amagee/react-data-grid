@@ -19,9 +19,8 @@ function setColumnWidths(columns, totalWidth) {
   return columns.map(column => {
     let colInfo = Object.assign({}, column);
     if (column.width) {
-      if (/^([0-9]+)%$/.exec(column.width.toString())) {
-        colInfo.width = Math.floor(
-          column.width / 100 * totalWidth);
+      if (/^([0-9.]+)%$/.exec(column.width.toString())) {
+        colInfo.width = Math.floor(parseFloat(column.width) / 100 * totalWidth);
       }
     }
     return colInfo;

@@ -103,6 +103,7 @@ const ReactDataGrid = React.createClass({
     onGridKeyUp: React.PropTypes.func,
     onGridKeyDown: React.PropTypes.func,
     rowGroupRenderer: React.PropTypes.func,
+    getCellContainerProps: React.PropTypes.func,
     rowActionsCell: React.PropTypes.func
   },
 
@@ -115,7 +116,8 @@ const ReactDataGrid = React.createClass({
       minHeight: 350,
       rowKey: 'id',
       rowScrollTimeout: 0,
-      cellNavigationMode: 'none'
+      cellNavigationMode: 'none',
+      getCellContainerProps: (props) => ({})
     };
   },
 

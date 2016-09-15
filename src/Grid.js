@@ -52,7 +52,8 @@ const Grid = React.createClass({
     getSubRowDetails: PropTypes.func,
     draggableHeaderCell: PropTypes.func,
     getValidFilterValues: PropTypes.func,
-    rowGroupRenderer: PropTypes.func
+    rowGroupRenderer: PropTypes.func,
+    getCellContainerProps: PropTypes.func
   },
 
   mixins: [
@@ -63,7 +64,8 @@ const Grid = React.createClass({
   getDefaultProps() {
     return {
       rowHeight: 35,
-      minHeight: 350
+      minHeight: 350,
+      getCellContainerProps: (props) => ({})
     };
   },
 
@@ -120,6 +122,7 @@ const Grid = React.createClass({
                   rowSelection={this.props.rowSelection}
                   getSubRowDetails={this.props.getSubRowDetails}
                   rowGroupRenderer={this.props.rowGroupRenderer}
+                  getCellContainerProps={this.props.getCellContainerProps}
                 />
             </div>
         :
