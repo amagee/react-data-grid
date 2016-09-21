@@ -59,7 +59,12 @@ class RowGroup extends Component {
     let shouldExpand = expand == null ? !this.props.isExpanded : expand;
     let meta = this.props.cellMetaData;
     if (meta != null && meta.onRowExpandToggle && typeof(meta.onRowExpandToggle) === 'function') {
-      meta.onRowExpandToggle({rowIdx: this.props.idx, shouldExpand: shouldExpand, columnGroupName: this.props.columnGroupName, name: this.props.name});
+      meta.onRowExpandToggle({
+        rowIdx: this.props.idx, 
+        shouldExpand: shouldExpand, 
+        columnGroupName: this.props.columnGroupName, 
+        name: this.props.name
+      });
     }
   }
 
@@ -89,7 +94,7 @@ class RowGroup extends Component {
 }
 
 RowGroup.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.any.isRequired,
   columnGroupName: PropTypes.string.isRequired,
   isExpanded: PropTypes.bool.isRequired,
   treeDepth: PropTypes.number.isRequired,
