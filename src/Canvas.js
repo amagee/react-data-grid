@@ -327,8 +327,6 @@ const Canvas = React.createClass({
     let rowHeight = this.props.rowHeight;
     let length = this.props.rowsCount;
 
-    console.log("canvas", this.props.getCellContainerProps);
-
     let rows = this.getRows(displayStart, displayEnd)
         .map((r, idx) => this.renderRow({
           key: displayStart + idx,
