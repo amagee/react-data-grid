@@ -49,7 +49,9 @@ const ReactDataGrid = React.createClass({
 
   propTypes: {
     rowHeight: React.PropTypes.number.isRequired,
+    includesHeader: React.PropTypes.bool,
     headerRowHeight: React.PropTypes.number,
+    rowOffsetHeight: React.PropTypes.number,
     minHeight: React.PropTypes.number.isRequired,
     minWidth: React.PropTypes.number,
     enableRowSelect: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.string]),
@@ -110,6 +112,7 @@ const ReactDataGrid = React.createClass({
   getDefaultProps(): {enableCellSelect: boolean} {
     return {
       enableCellSelect: false,
+      includesHeader: true,
       tabIndex: -1,
       rowHeight: 35,
       enableRowSelect: false,
@@ -596,12 +599,24 @@ const ReactDataGrid = React.createClass({
   },
 
   getRowOffsetHeight(): number {
-    let offsetHeight = 0;
-    this.getHeaderRows().forEach((row) => offsetHeight += parseFloat(row.height, 10) );
-    return offsetHeight;
+    if (!this.props.includeHeader) {
+      return 0;
+    }
+    if (this.props.rowOffsetHeight != null) {
+      return this.props.rowOffsetHeight;
+    }
+    else {
+      let offsetHeight = 0;
+      this.getHeaderRows().forEach((row) => offsetHeight += parseFloat(row.height, 10) );
+      return offsetHeight;
+    }
   },
 
   getHeaderRows(): Array<{ref: string; height: number;}> {
+    if (!this.props.includeHeader) {
+      return [];
+    }
+
     let rows = [{ ref: 'row', height: this.props.headerRowHeight || this.props.rowHeight, rowType: 'header' }];
     if (this.state.canFilter === true) {
       rows.push({

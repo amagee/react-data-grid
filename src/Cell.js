@@ -472,13 +472,21 @@ const Cell = React.createClass({
       column: this.props.column,
       rowIdx: this.props.rowIdx,
       row: this.props.row,
-      isExpanded: this.props.isExpanded
+      isExpanded: this.props.isExpanded,
+      isEditing: this.isActive()
     };
 
     let cellContent = this.renderCellContent(cellArgs);
     let {style: cellContainerPropsStyle, ...cellContainerProps} = this.props.getCellContainerProps(cellArgs);
 
-    let dragHandle = (!this.isActive() && ColumnUtils.canEdit(this.props.column, this.props.rowData, this.props.cellMetaData.enableCellSelect)) ? <div className="drag-handle" draggable="true" onDoubleClick={this.onDragHandleDoubleClick}><span style={{ display: 'none' }}></span></div> : null;
+    let dragHandle = (!this.isActive() && ColumnUtils.canEdit(this.props.column, this.props.rowData, this.props.cellMetaData.enableCellSelect)) ? 
+      <div 
+          className="drag-handle" 
+          draggable="true" 
+          onDoubleClick={this.onDragHandleDoubleClick}>
+        <span style={{ display: 'none' }} />
+      </div> 
+    : null;
     let events = this.getEvents();
 
     return (

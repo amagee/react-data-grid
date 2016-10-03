@@ -13,6 +13,7 @@ const Grid = React.createClass({
     columnMetrics: PropTypes.object,
     minHeight: PropTypes.number,
     totalWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    includesHeader: PropTypes.bool,
     headerRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
     rowHeight: PropTypes.number,
     rowRenderer: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
@@ -50,6 +51,7 @@ const Grid = React.createClass({
     rowScrollTimeout: PropTypes.number,
     contextMenu: PropTypes.element,
     getSubRowDetails: PropTypes.func,
+
     draggableHeaderCell: PropTypes.func,
     getValidFilterValues: PropTypes.func,
     rowGroupRenderer: PropTypes.func,
@@ -65,7 +67,8 @@ const Grid = React.createClass({
     return {
       rowHeight: 35,
       minHeight: 350,
-      getCellContainerProps: (props) => ({})
+      getCellContainerProps: (props) => ({}),
+      includesHeader: true
     };
   },
 
@@ -84,51 +87,54 @@ const Grid = React.createClass({
 
     return (
       <div {...this.props} style={this.getStyle()} className="react-grid-Grid">
-        <Header
-          ref="header"
-          columnMetrics={this.props.columnMetrics}
-          onColumnResize={this.props.onColumnResize}
-          height={this.props.rowHeight}
-          totalWidth={this.props.totalWidth}
-          headerRows={headerRows}
-          sortColumn={this.props.sortColumn}
-          sortDirection={this.props.sortDirection}
-          draggableHeaderCell={this.props.draggableHeaderCell}
-          onSort={this.props.onSort}
-          onScroll={this.onHeaderScroll}
-          getValidFilterValues={this.props.getValidFilterValues}
+        {this.props.includesHeader ? 
+          <Header
+            ref="header"
+            columnMetrics={this.props.columnMetrics}
+            onColumnResize={this.props.onColumnResize}
+            height={this.props.rowHeight}
+            totalWidth={this.props.totalWidth}
+            headerRows={headerRows}
+            sortColumn={this.props.sortColumn}
+            sortDirection={this.props.sortDirection}
+            draggableHeaderCell={this.props.draggableHeaderCell}
+            onSort={this.props.onSort}
+            onScroll={this.onHeaderScroll}
+            getValidFilterValues={this.props.getValidFilterValues}
           />
-          {this.props.rowsCount >= 1 || (this.props.rowsCount === 0 && !this.props.emptyRowsView) ?
-            <div ref="viewPortContainer" tabIndex="0" onKeyDown={this.props.onViewportKeydown} onKeyUp={this.props.onViewportKeyup} onDoubleClick={this.props.onViewportDoubleClick}   onDragStart={this.props.onViewportDragStart} onDragEnd={this.props.onViewportDragEnd}>
-                <Viewport
-                  ref="viewport"
-                  rowKey={this.props.rowKey}
-                  width={this.props.columnMetrics.width}
-                  rowHeight={this.props.rowHeight}
-                  rowRenderer={this.props.rowRenderer}
-                  rowGetter={this.props.rowGetter}
-                  rowsCount={this.props.rowsCount}
-                  selectedRows={this.props.selectedRows}
-                  expandedRows={this.props.expandedRows}
-                  columnMetrics={this.props.columnMetrics}
-                  totalWidth={this.props.totalWidth}
-                  onScroll={this.onScroll}
-                  onRows={this.props.onRows}
-                  cellMetaData={this.props.cellMetaData}
-                  rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
-                  minHeight={this.props.minHeight}
-                  rowScrollTimeout={this.props.rowScrollTimeout}
-                  contextMenu={this.props.contextMenu}
-                  rowSelection={this.props.rowSelection}
-                  getSubRowDetails={this.props.getSubRowDetails}
-                  rowGroupRenderer={this.props.rowGroupRenderer}
-                  getCellContainerProps={this.props.getCellContainerProps}
-                />
-            </div>
+        : null}
+
+        {this.props.rowsCount >= 1 || (this.props.rowsCount === 0 && !this.props.emptyRowsView) ?
+          <div ref="viewPortContainer" tabIndex="0" onKeyDown={this.props.onViewportKeydown} onKeyUp={this.props.onViewportKeyup} onDoubleClick={this.props.onViewportDoubleClick}   onDragStart={this.props.onViewportDragStart} onDragEnd={this.props.onViewportDragEnd}>
+            <Viewport
+              ref="viewport"
+              rowKey={this.props.rowKey}
+              width={this.props.columnMetrics.width}
+              rowHeight={this.props.rowHeight}
+              rowRenderer={this.props.rowRenderer}
+              rowGetter={this.props.rowGetter}
+              rowsCount={this.props.rowsCount}
+              selectedRows={this.props.selectedRows}
+              expandedRows={this.props.expandedRows}
+              columnMetrics={this.props.columnMetrics}
+              totalWidth={this.props.totalWidth}
+              onScroll={this.onScroll}
+              onRows={this.props.onRows}
+              cellMetaData={this.props.cellMetaData}
+              rowOffsetHeight={this.props.rowOffsetHeight || this.props.rowHeight * headerRows.length}
+              minHeight={this.props.minHeight}
+              rowScrollTimeout={this.props.rowScrollTimeout}
+              contextMenu={this.props.contextMenu}
+              rowSelection={this.props.rowSelection}
+              getSubRowDetails={this.props.getSubRowDetails}
+              rowGroupRenderer={this.props.rowGroupRenderer}
+              getCellContainerProps={this.props.getCellContainerProps}
+            />
+          </div>
         :
-            <div ref="emptyView" className="react-grid-Empty">
-                <EmptyRowsView />
-            </div>
+          <div ref="emptyView" className="react-grid-Empty">
+            <EmptyRowsView />
+          </div>
         }
       </div>
     );

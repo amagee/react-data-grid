@@ -39,7 +39,9 @@ module.exports = {
 
   _onScroll() {
     if (this._scrollLeft !== undefined) {
-      this.refs.header.setScrollLeft(this._scrollLeft);
+      if (this.refs.header) {
+        this.refs.header.setScrollLeft(this._scrollLeft);
+      }
       if (this.refs.viewport) {
         this.refs.viewport.setScrollLeft(this._scrollLeft);
       }
