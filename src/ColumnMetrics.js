@@ -20,7 +20,7 @@ function setColumnWidths(columns, totalWidth) {
     let colInfo = Object.assign({}, column);
     if (column.width) {
       if (/^([0-9.]+)%$/.exec(column.width.toString())) {
-        colInfo.width = Math.floor(parseFloat(column.width) / 100 * totalWidth);
+        colInfo.width = parseFloat(column.width) / 100 * totalWidth;
       }
     }
     return colInfo;
@@ -34,7 +34,7 @@ function setDefferedColumnWidths(columns, unallocatedWidth, minColumnWidth) {
       if (unallocatedWidth <= 0) {
         column.width = minColumnWidth;
       } else {
-        column.width = Math.floor(unallocatedWidth / (ColumnUtils.getSize(defferedColumns)));
+        column.width = unallocatedWidth / (ColumnUtils.getSize(defferedColumns));
       }
     }
     return column;
