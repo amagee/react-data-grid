@@ -135,6 +135,13 @@ const ReactDataGrid = React.createClass({
     return initialState;
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    // amagee patch: otherwise sometimes the component will forget to update.
+    if (nextProps.width != this.props.width) {
+      this.updateMetrics();
+    }
+  },
+
   hasSelectedCellChanged: function(selected: SelectedType) {
     let previouslySelected = Object.assign({}, this.state.selected);
     return previouslySelected.rowIdx !== selected.rowIdx || previouslySelected.idx !== selected.idx || previouslySelected.active === false;
@@ -882,8 +889,12 @@ const ReactDataGrid = React.createClass({
     if (typeof gridWidth === 'undefined' || isNaN(gridWidth) || gridWidth === 0) {
       gridWidth = '100%';
     }
+
+    // amagee: we changed the width from `containerWidth` to '100%' because
+    // otherwise if a scrollbar is visible on the parent component we would
+    // create an element that's too wide.
     return (
-      <div className="react-grid-Container" style={{width: containerWidth}}>
+      <div className="react-grid-Container" style={{width: '100%'}}>
         {toolbar}
         <div className="react-grid-Main">
           <BaseGrid
